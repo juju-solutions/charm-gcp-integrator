@@ -1,0 +1,13 @@
+repo: 'https://github.com/juju-solutions/layer-gcp'
+includes:
+  - 'layer:basic'
+  - 'layer:status'
+  - 'layer:snap'
+  - 'interface:gcp'
+options:
+  basic:
+    use_venv: true
+  snap:
+    google-cloud-sdk:
+      channel: stable
+      classic: true

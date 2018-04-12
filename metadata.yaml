@@ -1,0 +1,19 @@
+name: gcp
+summary: |
+  Proxy charm to enable GCP integrations via Juju relations.
+description: |
+  This charm can grant select permissions to instances of applications
+  related to it which enable integration with GCP specific features,
+  such as firewalls, load balancing, block storage, object storage, etc.
+maintainers: ['Cory Johns <johnsca@gmail.com>']
+series:
+  - xenial
+tags: ['gcp', 'native', 'integration']
+provides:
+  gcp:
+    interface: gcp
+resources:
+  gcloud:
+    type: file
+    filename: gcloud.snap
+    description: Resource to side-load gcloud snap in network-restricted deployments.
