@@ -302,7 +302,7 @@ def _ensure_custom_role(name, title, description, permissions):
 
 def _add_roles(service_account, roles):
     for role in roles:
-        _gcloud('projects', 'add-iam-policy-binding', PROJECT,
+        _gcloud('iam', 'projects', 'add-iam-policy-binding', PROJECT,
                 '--member', 'serviceAccount:{}'.format(service_account),
                 '--role', role)
         log('Added role {} to service account {}', role, service_account)
