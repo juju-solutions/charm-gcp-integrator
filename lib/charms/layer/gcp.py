@@ -79,6 +79,7 @@ def update_credentials_file(creds_data):
     """
     Write the credentials file.
     """
+    global PROJECT
     with CREDS_FILE.open('w') as fp:
         os.fchmod(fp.fileno(), 0o600)
         fp.write(creds_data)
@@ -302,7 +303,7 @@ def _ensure_custom_role(name, title, description, permissions):
 
 def _add_roles(service_account, roles):
     for role in roles:
-        _gcloud('iam', 'projects', 'add-iam-policy-binding', PROJECT,
+        _gcloud('projects', 'add-iam-policy-binding', PROJECT,
                 '--member', 'serviceAccount:{}'.format(service_account),
                 '--role', role)
         log('Added role {} to service account {}', role, service_account)
