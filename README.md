@@ -36,6 +36,82 @@ juju trust gcp
 To deploy with earlier versions of Juju, you will need to provide the cloud
 credentials via the `credentials`, charm config options.
 
+# Examples
+
+Following are some examples using GCE integration with CDK.
+
+## Creating a pod with a PersistentDisk-backed volume
+
+This script creates a busybox pod with a persistent volume claim backed by
+GCE's PersistentDisk.
+
+```sh
+#!/bin/bash
+
+# create a storage class using the `kubernetes.io/gce-pd` provisioner
+kubectl create -f - <<EOY
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gce-standard
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard
+EOY
+
+# create a persistent volume claim using that storage class
+kubectl create -f - <<EOY
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: testclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: gce-standard
+EOY
+
+# create the busybox pod with a volume using that PVC:
+kubectl create -f - <<EOY
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: default
+spec:
+  containers:
+    - image: busybox
+      command:
+        - sleep
+        - "3600"
+      imagePullPolicy: IfNotPresent
+      name: busybox
+      volumeMounts:
+        - mountPath: "/pv"
+          name: testvolume
+  restartPolicy: Always
+  volumes:
+    - name: testvolume
+      persistentVolumeClaim:
+        claimName: testclaim
+EOY
+```
+
+## Creating a service with a GCE load-balancer
+
+The following script starts the hello-world pod behind a GCE-backed load-balancer.
+
+```sh
+#!/bin/bash
+
+kubectl run hello-world --replicas=5 --labels="run=load-balancer-example" --image=gcr.io/google-samples/node-hello:1.0  --port=8080
+kubectl expose deployment hello-world --type=LoadBalancer --name=hello
+watch kubectl get svc -o wide --selector=run=load-balancer-example
+```
+
 
 [interface]: https://github.com/juju-solutions/interface-gcp
 [CDK]: https://jujucharms.com/canonical-kubernetes
