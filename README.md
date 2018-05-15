@@ -9,17 +9,13 @@ the applications that are related to this charm.
 When on GCP, this charm can be deployed, granted trust via Juju to access GCP,
 and then related to an application that supports the [interface][].
 
-For example, [CDK][] has [pending support][PR] for this, and can be deployed
-with the following bundle overlay:
+For example, [CDK][] has support for this, and can be deployed with the
+following bundle overlay:
 
 ```yaml
 applications:
-  kubernetes-master:
-    charm: cs:~johnsca/kubernetes-master
-  kubernetes-worker:
-    charm: cs:~johnsca/kubernetes-worker
   gcp:
-    charm: cs:~johnsca/gcp
+    charm: cs:~containers/gcp
     num_units: 1
 relations:
   - ['gcp', 'kubernetes-master']
@@ -115,4 +111,3 @@ watch kubectl get svc -o wide --selector=run=load-balancer-example
 
 [interface]: https://github.com/juju-solutions/interface-gcp
 [CDK]: https://jujucharms.com/canonical-kubernetes
-[PR]: https://github.com/kubernetes/kubernetes/pull/62354
