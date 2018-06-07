@@ -1,3 +1,5 @@
+import subprocess
+
 from charms.reactive import (
     when_all,
     when_any,
@@ -6,8 +8,23 @@ from charms.reactive import (
     clear_flag,
 )
 from charms.reactive.relations import endpoint_from_name
+from charmhelpers.core import hookenv
 
 from charms import layer
+
+
+@when_all('snap.installed.google-cloud-sdk')
+def set_app_ver():
+    try:
+        result = subprocess.run(['snap', 'info', 'google-cloud-sdk'],
+                                stdout=subprocess.PIPE)
+    except subprocess.CalledProcessError:
+        pass
+    else:
+        stdout = result.stdout.decode('utf8').splitlines()
+        version = [line.split()[1] for line in stdout if 'installed' in line]
+        if version:
+            hookenv.application_version_set(version[0])
 
 
 @when_any('config.changed.credentials')

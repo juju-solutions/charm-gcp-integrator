@@ -1,9 +1,9 @@
-repo: 'https://github.com/juju-solutions/layer-gcp'
+repo: 'https://github.com/juju-solutions/charm-gcp-integrator'
 includes:
   - 'layer:basic'
   - 'layer:status'
   - 'layer:snap'
-  - 'interface:gcp'
+  - 'interface:gcp-integration'
 options:
   basic:
     use_venv: true

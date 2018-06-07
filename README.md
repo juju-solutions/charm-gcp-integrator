@@ -14,12 +14,12 @@ following bundle overlay:
 
 ```yaml
 applications:
-  gcp:
-    charm: cs:~containers/gcp
+  gcp-integrator:
+    charm: cs:~containers/gcp-integrator
     num_units: 1
 relations:
-  - ['gcp', 'kubernetes-master']
-  - ['gcp', 'kubernetes-worker']
+  - ['gcp-integrator', 'kubernetes-master']
+  - ['gcp-integrator', 'kubernetes-worker']
 ```
 
 Using Juju 2.4-beta1 or later:
@@ -109,5 +109,5 @@ watch kubectl get svc -o wide --selector=run=load-balancer-example
 ```
 
 
-[interface]: https://github.com/juju-solutions/interface-gcp
+[interface]: https://github.com/juju-solutions/interface-gcp-integration
 [CDK]: https://jujucharms.com/canonical-kubernetes
