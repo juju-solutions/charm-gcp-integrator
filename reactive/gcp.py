@@ -2,12 +2,20 @@ from charms.reactive import (
     when_all,
     when_any,
     when_not,
+    set_flag,
     toggle_flag,
     clear_flag,
 )
 from charms.reactive.relations import endpoint_from_name
+from charmhelpers.core import hookenv
 
 from charms import layer
+
+
+@when_not('charm.gcp.app-ver.set')
+def set_app_ver():
+    hookenv.application_version_set('1.0')
+    set_flag('charm.gcp.app-ver.set')
 
 
 @when_any('config.changed.credentials')
