@@ -32,9 +32,19 @@ juju trust gcp
 To deploy with earlier versions of Juju, you will need to provide the cloud
 credentials via the `credentials`, charm config options.
 
+# Resource Usage Note
+
+By relating to this charm, other charms can directly allocate resources, such
+as PersistentDisk volumes and Load Balancers, which could lead to cloud charges
+and count against quotas.  Because these resources are not managed by Juju,
+they will not be automatically deleted when the models or applications are
+destroyed, nor will they show up in Juju's status or GUI.  It is therefore up
+to the operator to manually delete these resources when they are no longer
+needed, using the Google Cloud console or API.
+
 # Examples
 
-Following are some examples using GCE integration with CDK.
+Following are some examples using GCP integration with CDK.
 
 ## Creating a pod with a PersistentDisk-backed volume
 
