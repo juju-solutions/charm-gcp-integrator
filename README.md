@@ -22,15 +22,27 @@ relations:
   - ['gcp-integrator', 'kubernetes-worker']
 ```
 
-Using Juju 2.4-beta1 or later:
+Then deploy CDK using this overlay:
 
 ```
 juju deploy cs:canonical-kubernetes --overlay ./k8s-gcp-overlay.yaml
-juju trust gcp
 ```
 
-To deploy with earlier versions of Juju, you will need to provide the cloud
-credentials via the `credentials`, charm config options.
+The charm then needs to be granted access to credentials that it can use to
+setup integrations.  Using Juju 2.4 or later, you can easily grant access to
+the credentials used deploy the integrator itself:
+
+```
+juju trust gcp-integrator
+```
+
+To deploy with earlier versions of Juju, or if you wish to provide it different
+credentials, you will need to provide the cloud credentials via the `credentials`,
+charm config options.
+
+**Note:** The credentials used must be [enabled to use the API][iam-api] to
+inspect the instances connecting to it, enable a service account for those
+instances, assign roles to those instances, and create custom roles.
 
 # Resource Usage Note
 
@@ -120,4 +132,6 @@ watch kubectl get svc -o wide --selector=run=load-balancer-example
 
 
 [interface]: https://github.com/juju-solutions/interface-gcp-integration
+[api-doc]: https://github.com/juju-solutions/interface-gcp-integration/blob/master/docs/requires.md
 [CDK]: https://jujucharms.com/canonical-kubernetes
+[iam-api]: https://console.developers.google.com/apis/api/iam.googleapis.com/overview

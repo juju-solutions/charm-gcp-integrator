@@ -1,4 +1,5 @@
 import subprocess
+from traceback import format_exc
 
 from charms.reactive import (
     when_all,
@@ -51,46 +52,51 @@ def no_requests():
           'endpoint.gcp.requests-pending')
 def handle_requests():
     gcp = endpoint_from_name('gcp')
-    for request in gcp.requests:
-        layer.status.maintenance('granting request for {}'.format(
-            request.unit_name))
-        if not request.has_credentials:
-            creds = layer.gcp.create_account_key(request.model_uuid,
-                                                 request.application_name,
-                                                 request.relation_id)
-            request.set_credentials(creds)
-        if request.instance_labels:
-            layer.gcp.label_instance(
-                request.instance,
-                request.zone,
-                request.instance_labels)
-        if request.requested_instance_inspection:
-            layer.gcp.enable_instance_inspection(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_network_management:
-            layer.gcp.enable_network_management(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_security_management:
-            layer.gcp.enable_security_management(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_block_storage_management:
-            layer.gcp.enable_block_storage_management(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_dns_management:
-            layer.gcp.enable_dns_management(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_object_storage_access:
-            layer.gcp.enable_object_storage_access(
-                request.model_uuid,
-                request.application_name)
-        if request.requested_object_storage_management:
-            layer.gcp.enable_object_storage_management(
-                request.model_uuid,
-                request.application_name)
-        layer.gcp.log('Finished request for {}'.format(request.unit_name))
-    gcp.mark_completed()
+    try:
+        for request in gcp.requests:
+            layer.status.maintenance('granting request for {}'.format(
+                request.unit_name))
+            if not request.has_credentials:
+                creds = layer.gcp.create_account_key(request.model_uuid,
+                                                     request.application_name,
+                                                     request.relation_id)
+                request.set_credentials(creds)
+            if request.instance_labels:
+                layer.gcp.label_instance(
+                    request.instance,
+                    request.zone,
+                    request.instance_labels)
+            if request.requested_instance_inspection:
+                layer.gcp.enable_instance_inspection(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_network_management:
+                layer.gcp.enable_network_management(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_security_management:
+                layer.gcp.enable_security_management(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_block_storage_management:
+                layer.gcp.enable_block_storage_management(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_dns_management:
+                layer.gcp.enable_dns_management(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_object_storage_access:
+                layer.gcp.enable_object_storage_access(
+                    request.model_uuid,
+                    request.application_name)
+            if request.requested_object_storage_management:
+                layer.gcp.enable_object_storage_management(
+                    request.model_uuid,
+                    request.application_name)
+            layer.gcp.log('Finished request for {}'.format(request.unit_name))
+        gcp.mark_completed()
+    except layer.gcp.GCPError:
+        layer.gcp.log_err(format_exc())
+        layer.status.blocked('error while granting requests; '
+                             'check credentials and debug-log')
