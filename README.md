@@ -40,8 +40,8 @@ To deploy with earlier versions of Juju, or if you wish to provide it different
 credentials, you will need to provide the cloud credentials via the `credentials`,
 charm config options.
 
-**Note:** The credentials used must have rights to use the API to inspect the
-instances connecting to it, enable a service account for those
+**Note:** The credentials used must be [enabled to use the API][iam-api] to
+inspect the instances connecting to it, enable a service account for those
 instances, assign roles to those instances, and create custom roles.
 
 # Resource Usage Note
@@ -134,3 +134,4 @@ watch kubectl get svc -o wide --selector=run=load-balancer-example
 [interface]: https://github.com/juju-solutions/interface-gcp-integration
 [api-doc]: https://github.com/juju-solutions/interface-gcp-integration/blob/master/docs/requires.md
 [CDK]: https://jujucharms.com/canonical-kubernetes
+[iam-api]: https://console.developers.google.com/apis/api/iam.googleapis.com/overview
