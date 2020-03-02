@@ -1,7 +1,7 @@
 name: gcp-integrator
 display-name: GCP-Integrator
 summary: |
-  Pharm to enable GCP integrations via Juju relations.
+  Charm to enable GCP integrations via Juju relations.
 description: |
   This charm can grant select permissions to instances of applications
   related to it which enable integration with GCP specific features,
@@ -10,6 +10,7 @@ maintainers: ['Cory Johns <cory.johns@canonical.com>']
 series:
   - xenial
   - bionic
+  - focal
 tags: ['gcp', 'native', 'integration']
 provides:
   gcp:
