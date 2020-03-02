@@ -10,6 +10,7 @@ maintainers: ['Cory Johns <cory.johns@canonical.com>']
 series:
   - xenial
   - bionic
+  - focal
 tags: ['gcp', 'native', 'integration']
 provides:
   gcp:
