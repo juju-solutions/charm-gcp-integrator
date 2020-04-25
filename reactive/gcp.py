@@ -7,6 +7,7 @@ from charms.reactive import (
     when_not,
     toggle_flag,
     clear_flag,
+    hook,
 )
 from charms.reactive.relations import endpoint_from_name
 from charmhelpers.core import hookenv
@@ -100,3 +101,8 @@ def handle_requests():
         layer.gcp.log_err(format_exc())
         layer.status.blocked('error while granting requests; '
                              'check credentials and debug-log')
+
+
+@hook('pre-series-upgrade')
+def pre_series_upgrade():
+    layer.status.blocked('Series upgrade in progress')
