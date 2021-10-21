@@ -19,4 +19,9 @@ resources:
   gcloud:
     type: file
     filename: gcloud.snap
-    description: Resource to side-load gcloud snap in network-restricted deployments.
+    description: |
+      Resource to side-load gcloud snap in network-restricted deployments.
+      The gcloud snap is no longer used by the charm, but the google-cloud-sdk
+      snap is used in its place.
+      [DEPRECATED] in favor of using a Snap Store Proxy.
+      See https://ubuntu.com/kubernetes/docs/proxies for more details.
