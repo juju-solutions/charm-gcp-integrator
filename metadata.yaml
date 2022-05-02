@@ -2,6 +2,7 @@ name: gcp-integrator
 display-name: GCP-Integrator
 summary: |
   Charm to enable GCP integrations via Juju relations.
+docs: https://discourse.charmhub.io/t/gcp-integrator-docs-index/6318
 description: |
   This charm can grant select permissions to instances of applications
   related to it which enable integration with GCP specific features,
