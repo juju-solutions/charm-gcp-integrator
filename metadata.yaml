@@ -10,6 +10,7 @@ description: |
 docs: https://discourse.charmhub.io/t/gcp-integrator-docs-index/6099
 maintainers: ['Cory Johns <cory.johns@canonical.com>']
 series:
+  - jammy
   - focal
   - bionic
   - xenial
