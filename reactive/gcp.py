@@ -102,7 +102,7 @@ def handle_requests():
     except layer.gcp.GCPError:
         layer.gcp.log_err(format_exc())
         layer.status.blocked(
-            "error while granting requests; " "check credentials and debug-log"
+            "error while granting requests; check credentials and debug-log"
         )
 
 
