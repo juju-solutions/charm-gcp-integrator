@@ -8,6 +8,8 @@ options:
   basic:
     use_venv: true
   snap:
+    google-cloud-sdk:
+      remove: true
     google-cloud-cli:
       channel: stable
       classic: true

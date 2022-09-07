@@ -10,15 +10,9 @@ from charms.reactive import (
     hook,
 )
 from charms.reactive.relations import endpoint_from_name
-import charms.layer.snap
 from charmhelpers.core import hookenv
 
 from charms import layer
-
-
-@when_all("snap.installed.google-cloud-sdk")
-def remove_snap():
-    charms.layer.snap.remove("google-cloud-sdk")
 
 
 @when_all("snap.installed.google-cloud-cli")
