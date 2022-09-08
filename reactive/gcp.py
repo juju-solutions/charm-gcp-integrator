@@ -15,11 +15,11 @@ from charmhelpers.core import hookenv
 from charms import layer
 
 
-@when_all("snap.installed.google-cloud-sdk")
+@when_all("snap.installed.google-cloud-cli")
 def set_app_ver():
     try:
         result = subprocess.run(
-            ["snap", "info", "google-cloud-sdk"], stdout=subprocess.PIPE
+            ["snap", "info", "google-cloud-cli"], stdout=subprocess.PIPE
         )
     except subprocess.CalledProcessError:
         pass
@@ -40,7 +40,7 @@ def get_creds():
     toggle_flag("charm.gcp.creds.set", layer.gcp.get_credentials())
 
 
-@when_all("snap.installed.google-cloud-sdk", "charm.gcp.creds.set")
+@when_all("snap.installed.google-cloud-cli", "charm.gcp.creds.set")
 @when_not("endpoint.gcp.requests-pending")
 def no_requests():
     gcp = endpoint_from_name("gcp")
@@ -49,7 +49,7 @@ def no_requests():
 
 
 @when_all(
-    "snap.installed.google-cloud-sdk",
+    "snap.installed.google-cloud-cli",
     "charm.gcp.creds.set",
     "endpoint.gcp.requests-pending",
 )
