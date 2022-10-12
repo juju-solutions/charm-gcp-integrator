@@ -228,9 +228,10 @@ def cleanup(relation_ids):
     Cleanup unused account keys.
     """
     account_keys = kv().getrange("charm.gcp.account-keys.", strip=True)
-    broken_relations = account_keys.keys() - relation_ids
-    removed = []
-    for relation_id in broken_relations:
+    broken = account_keys.keys() - relation_ids
+    remaining = account_keys.keys() - broken
+
+    for relation_id in broken:
         key = account_keys[relation_id]
         _gcloud(
             "iam",
@@ -246,9 +247,18 @@ def cleanup(relation_ids):
             key["id"],
             key["service-account"],
         )
-        removed.append(relation_id)
-    # TODO: purge no-longer used SAs and clean up project policy
-    kv().unsetrange(removed, prefix="charm.gcp.account-keys.")
+    kv().unsetrange(broken, prefix="charm.gcp.account-keys.")
+
+    all_sa = {key["service-account"] for key in account_keys.values()}
+    remaining_sa = {account_keys[rel_id]["service-account"] for rel_id in remaining}
+    for removed_sa in all_sa - remaining_sa:
+        _gcloud(
+            "iam",
+            "service-accounts",
+            "delete",
+            removed_sa,
+        )
+        log("Deleted unused service account {}", removed_sa)
 
 
 # Internal helpers
