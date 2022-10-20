@@ -1,8 +1,8 @@
 description: Overlay for attaching current charm
-series: &series {{ series }}
+series: {{ series }}
 applications:
   gcp-integrator:
-    charm: {{charm}}
+    charm: {{ charm }}
     channel: null
     resources:
       gcloud: 0
