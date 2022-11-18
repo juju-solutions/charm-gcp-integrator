@@ -10,9 +10,8 @@ description: |
 docs: https://discourse.charmhub.io/t/gcp-integrator-docs-index/6099
 maintainers: ['Cory Johns <cory.johns@canonical.com>']
 series:
-  - focal
   - jammy
-  - bionic
+  - focal
 tags: ['gcp', 'native', 'integration']
 provides:
   gcp:
