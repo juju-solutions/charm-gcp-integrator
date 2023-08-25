@@ -22,10 +22,8 @@ async def test_build_and_deploy(ops_test, k8s_core_bundle, series):
     bundle, *overlays = await ops_test.async_render_bundles(*overlays, **context)
     log.info("Deploy Charm...")
     model = ops_test.model_full_name
-    cmd = (
-        f"juju deploy -m {model} {bundle} "
-        "--trust"
-        " ".join(f"--overlay={f}" for f in overlays)
+    cmd = f"juju deploy -m {model} {bundle} --trust " + " ".join(
+        f"--overlay={f}" for f in overlays
     )
     rc, stdout, stderr = await ops_test.run(*shlex.split(cmd))
     assert rc == 0, f"Bundle deploy failed: {(stderr or stdout).strip()}"
