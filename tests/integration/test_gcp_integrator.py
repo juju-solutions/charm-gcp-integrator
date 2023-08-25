@@ -24,7 +24,7 @@ async def test_build_and_deploy(ops_test, k8s_core_bundle, series):
     model = ops_test.model_full_name
     cmd = (
         f"juju deploy -m {model} {bundle} "
-        "--trust"
+        "--trust " +
         " ".join(f"--overlay={f}" for f in overlays)
     )
     rc, stdout, stderr = await ops_test.run(*shlex.split(cmd))
